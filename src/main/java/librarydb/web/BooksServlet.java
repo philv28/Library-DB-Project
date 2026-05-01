@@ -60,7 +60,6 @@ public class BooksServlet extends HttpServlet {
                     bt.PublicationYear,
                     GROUP_CONCAT(DISTINCT CONCAT(a.FirstName, ' ', a.LastName) SEPARATOR ', ') AS Authors,
                     GROUP_CONCAT(DISTINCT g.GenreName SEPARATOR ', ') AS Genres,
-                    COUNT(bc.CopyID) AS TotalCopies,
                     SUM(CASE WHEN bc.Status = 'Available' THEN 1 ELSE 0 END) AS AvailableCopies
                 FROM BookTitles bt
                 LEFT JOIN WrittenBy wb ON bt.ISBN = wb.ISBN
@@ -80,7 +79,6 @@ public class BooksServlet extends HttpServlet {
             out.println("<th>Genre(s)</th>");
             out.println("<th>Publisher</th>");
             out.println("<th>Publication Year</th>");
-            out.println("<th>Total Copies</th>");
             out.println("<th>Available Copies</th>");
             out.println("</tr>");
 
@@ -92,7 +90,6 @@ public class BooksServlet extends HttpServlet {
                 out.println("<td>" + rs.getString("Genres") + "</td>");
                 out.println("<td>" + rs.getString("Publisher") + "</td>");
                 out.println("<td>" + rs.getInt("PublicationYear") + "</td>");
-                out.println("<td>" + rs.getInt("TotalCopies") + "</td>");
                 out.println("<td>" + rs.getInt("AvailableCopies") + "</td>");
                 out.println("</tr>");
             }
