@@ -10,6 +10,8 @@
 ### Setup
 
 1. Make sure you have a LibraryDB running on your local device(This can be done with LibraryDB.sql)
+- First run LibraryDB.sql
+- Then run LibraryDB_Views.sql
 
 3. Create a `.env` file in the project root with the following:
 
