@@ -8,8 +8,6 @@ import java.sql.*;
 
 public class TrendingBooksServlet extends HttpServlet {
 
-    private final Dotenv dotenv = Dotenv.load();
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
@@ -96,11 +94,12 @@ public class TrendingBooksServlet extends HttpServlet {
                         "ORDER BY TimesBorrowed DESC";
 
         try {
-            Connection conn = DriverManager.getConnection(
-                    dotenv.get("DB_URL"),
-                    dotenv.get("DB_USER"),
-                    dotenv.get("DB_PASSWORD")
-            );
+            Dotenv dotenv = Dotenv.load();
+            String url      = dotenv.get("DB_URL");
+            String user     = dotenv.get("DB_USER");
+            String password = dotenv.get("DB_PASSWORD");
+
+            Connection conn = DriverManager.getConnection(url, user, password);
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
