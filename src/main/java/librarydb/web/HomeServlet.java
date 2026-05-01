@@ -69,6 +69,7 @@ public class HomeServlet extends HttpServlet {
                             <a href='/members'>Manage Members</a>
                             <a href='/add-member'>Add Member</a>
                             <a href='/queries'>View Queries</a>
+                            <a href='/books'>View Books</a>
                         </div>
                     </div>
                     </body>

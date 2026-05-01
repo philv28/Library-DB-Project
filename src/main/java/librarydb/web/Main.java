@@ -19,6 +19,7 @@ public class Main {
         context.addServlet(AddMemberServlet.class, "/add-member");
         context.addServlet(DeleteMembersServlet.class, "/delete-member");
         context.addServlet(QueriesServlet.class, "/queries");
+        context.addServlet(BooksServlet.class, "/books");
 
         // Start server
         server.start();
