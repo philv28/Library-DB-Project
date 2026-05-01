@@ -1,6 +1,7 @@
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
+// Test the thing ig
 public class Main {
     public static void main(String[] args) throws Exception {
         // Start Jetty on port 8080
@@ -11,7 +12,6 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
-
 
         // Start server
         server.start();

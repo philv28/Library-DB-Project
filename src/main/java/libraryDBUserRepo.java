@@ -1,13 +1,10 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import javax.sound.midi.SysexMessage;
+import java.sql.*;
 
 public class libraryDBUserRepo implements UserRepository {
-
-    String url = "[INSERT URL HERE]";
-    String user = "root";
-    String password = "[INSERT PASSWORD HERE]";
+    String url = "jdbc:mysql://localhost:3306/LibraryDB";
+    String user = "Admin";
+    String password = "johnpassword";
 
     void save(String arg){
         System.out.println("yh");
@@ -17,17 +14,64 @@ public class libraryDBUserRepo implements UserRepository {
     public void save() {
     }
 
-    public void showUser(int MemberID){
-        String commandSQL = String.format("SELECT * FROM members WHERE MemberID = %d", MemberID);
-        sqlCall(commandSQL);
+    public void showUser(int memberID){
+        String commandSQL = "SELECT * FROM Members WHERE memberID = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            PreparedStatement ps = conn.prepareStatement(commandSQL);
+
+            ps.setInt(1, memberID);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                rs.getInt("MemberID");
+                rs.getString("FirstName");
+                rs.getString("LastName");
+                rs.getString("Address");
+                rs.getString("Email");
+                rs.getDate("DateOfBirth");
+                rs.getString("LicenseID");
+                rs.getBoolean("IsMinor");
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Search failure or user does not exist!");
+            System.exit(-1);
+        }
     }
 
 
     // TODO: USE PreparedStatement.setInt() FOR PARAMS AND USE "?"
     public void newMember(String firstName, String lastName, int memberID, String dateOfBirth, String licenseID, boolean minorStatus, String email, String address){
+        String commandSQL = "INSERT INTO members (MemberID, FirstName, LastName, Address, Email, DateOfBirth, LicenseID, MinorStatus) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)){
+            PreparedStatement ps = conn.prepareStatement(commandSQL);
+
+            ps.setInt(1, memberID);
+            ps.setString(2, firstName);
+            ps.setString(3, lastName);
+            ps.setString(4, address);
+            ps.setString(5, email);
+            ps.setDate(6, Date.valueOf(dateOfBirth));
+            ps.setString(7, licenseID);
+            ps.setBoolean(8, minorStatus);
+
+            int rows = ps.executeUpdate();
+            if (rows > 0){
+                System.out.println("User Inserted");
+            }
+
+        } catch (SQLException e){
+            System.out.println("User insert failed!");
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
     }
 
-    // For these queries, do we even need parameters like this?
+    // TODO: Add boilerplate try-catch to show query results
     public void overdueBookSearch() {
         String commandSQL = """
                SELECT
@@ -93,7 +137,6 @@ public class libraryDBUserRepo implements UserRepository {
             Connection conn = DriverManager.getConnection(url, user, password);
 
             PreparedStatement stmt = conn.prepareStatement(commandLine);
-
             ResultSet rs = stmt.executeQuery();
         } catch (Exception e) {
             System.out.println("Failed to insert new member!");
