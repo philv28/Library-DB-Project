@@ -18,18 +18,93 @@ public class QueriesServlet extends HttpServlet {
             <head>
                 <title>Queries</title>
                 <style>
-                    body { font-family: Arial; margin: 30px; background: #f7f7f7; }
-                    table { border-collapse: collapse; background: white; margin-bottom: 30px; }
-                    th, td { border: 1px solid #ccc; padding: 8px; }
-                    th { background: #eee; }
-                    .queryBox { background: white; padding: 20px; margin-bottom: 25px; border-radius: 8px; }
-                    pre { background: #f0f0f0; padding: 10px; overflow-x: auto; }
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        background: #f4f6f8;
+                        color: #222;
+                    }
+                    
+                    .container {
+                        max-width: 1100px;
+                        margin: 40px auto;
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                    }
+                    
+                    h1 {
+                        margin-top: 0;
+                        color: #2c3e50;
+                    }
+                    
+                    nav {
+                        margin-bottom: 25px;
+                    }
+                    
+                     nav a {
+                         display: inline-block;
+                         margin-right: 10px;
+                         padding: 10px 14px;
+                         background: #2c3e50;
+                         color: white;
+                         text-decoration: none;
+                         border-radius: 6px;
+                     }
+                    
+                    nav a:hover {
+                        background: #1a252f;
+                    }
+                    
+                    .queryBox {
+                        background: #fafafa;
+                        padding: 20px;
+                        margin-bottom: 25px;
+                        border-radius: 8px;
+                        border: 1px solid #ddd;
+                    }
+                    
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        background: white;
+                        margin-top: 15px;
+                    }
+                    
+                    th {
+                        background: #2c3e50;
+                        color: white;
+                        padding: 10px;
+                        text-align: left;
+                    }
+                    
+                    td {
+                        border-bottom: 1px solid #ddd;
+                        padding: 10px;
+                    }
+                    
+                    tr:hover {
+                        background: #f1f1f1;
+                    }
+                    
+                    pre {
+                        background: #f0f0f0;
+                        padding: 10px;
+                        overflow-x: auto;
+                        border-radius: 6px;
+                    }
                 </style>
             </head>
             <body>
-            <h1>SQL Query Showcase</h1>
-            <a href='/'>Home</a>
-        """);
+            <div class='container'>
+            <h1>SQL Query</h1>
+            
+            <nav>
+                <a href='/'>Home</a>
+                <a href='/members'>Members</a>
+            </nav>
+            """);
 
         try {
             String url = "jdbc:mysql://localhost:3306/LibraryDB";
@@ -98,6 +173,7 @@ public class QueriesServlet extends HttpServlet {
             out.println("</pre>");
         }
 
+        out.println("</div>");
         out.println("</body></html>");
     }
 

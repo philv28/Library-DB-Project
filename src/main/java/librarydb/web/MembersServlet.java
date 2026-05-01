@@ -12,23 +12,99 @@ public class MembersServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Members</title>");
-        out.println("<style>");
-        out.println("body { font-family: Arial; margin: 30px; background: #f7f7f7; }");
-        out.println("table { border-collapse: collapse; background: white; }");
-        out.println("th, td { border: 1px solid #ccc; padding: 8px; }");
-        out.println("th { background: #eee; }");
-        out.println("a { margin-right: 15px; }");
-        out.println("</style>");
-        out.println("</head>");
-        out.println("<body>");
-
-        out.println("<h1>Members</h1>");
-        out.println("<a href='/'>Home</a>");
-        out.println("<a href='/add-member'>Add Member</a>");
-        out.println("<br><br>");
+        out.println("""
+            <html>
+            <head>
+                <title>Members</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        background: #f4f6f8;
+                        color: #222;
+                    }
+                    
+                    .container {
+                        max-width: 1100px;
+                        margin: 40px auto;
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                    }
+                    
+                    h1 {
+                        margin-top: 0;
+                        color: #2c3e50;
+                    }
+                    
+                    nav {
+                        margin-bottom: 25px;
+                    }
+                    
+                     nav a {
+                         display: inline-block;
+                         margin-right: 10px;
+                         padding: 10px 14px;
+                         background: #2c3e50;
+                         color: white;
+                         text-decoration: none;
+                         border-radius: 6px;
+                     }
+                    
+                    nav a:hover {
+                        background: #1a252f;
+                    }
+                    
+                    .queryBox {
+                        background: #fafafa;
+                        padding: 20px;
+                        margin-bottom: 25px;
+                        border-radius: 8px;
+                        border: 1px solid #ddd;
+                    }
+                    
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        background: white;
+                        margin-top: 15px;
+                    }
+                    
+                    th {
+                        background: #2c3e50;
+                        color: white;
+                        padding: 10px;
+                        text-align: left;
+                    }
+                    
+                    td {
+                        border-bottom: 1px solid #ddd;
+                        padding: 10px;
+                    }
+                    
+                    tr:hover {
+                        background: #f1f1f1;
+                    }
+                    
+                    pre {
+                        background: #f0f0f0;
+                        padding: 10px;
+                        overflow-x: auto;
+                        border-radius: 6px;
+                    }
+                </style>
+            </head>
+            <body>
+            <div class='container'>
+            <h1>Members</h1>
+            
+            <nav>
+                <a href='/'>Home</a>
+                <a href='/add-member'>Add Member</a>
+                <a href='/queries'>Queries</a>
+            </nav>
+            """);
 
         try {
             String url = "jdbc:mysql://localhost:3306/LibraryDB";

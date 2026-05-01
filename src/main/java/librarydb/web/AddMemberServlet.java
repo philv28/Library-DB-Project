@@ -13,31 +13,121 @@ public class AddMemberServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        out.println("<html>");
-        out.println("<head><title>Add Member</title></head>");
-        out.println("<body style='font-family: Arial; margin: 30px;'>");
-
-        out.println("<h1>Add Member</h1>");
-        out.println("<a href='/'>Home</a> | <a href='/members'>Back to Members</a><br><br>");
-
-        out.println("<form method='post' action='/add-member'>");
-        out.println("Member ID: <input type='number' name='MemberID' required><br><br>");
-        out.println("First Name: <input type='text' name='FirstName' required><br><br>");
-        out.println("Last Name: <input type='text' name='LastName' required><br><br>");
-        out.println("Address: <input type='text' name='Address' required><br><br>");
-        out.println("Email: <input type='email' name='Email' required><br><br>");
-        out.println("Date of Birth: <input type='date' name='DateOfBirth' required><br><br>");
-        out.println("License ID: <input type='text' name='LicenseID' required><br><br>");
-        out.println("Is Minor: ");
-        out.println("<select name='IsMinor'>");
-        out.println("<option value='false'>False</option>");
-        out.println("<option value='true'>True</option>");
-        out.println("</select><br><br>");
-        out.println("<button type='submit'>Add Member</button>");
-        out.println("</form>");
-
-        out.println("</body>");
-        out.println("</html>");
+        out.println("""
+            <html>
+            <head>
+                <title>Add Member</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        background: #f4f6f8;
+                        color: #222;
+                    }
+                    
+                    .container {
+                        max-width: 1100px;
+                        margin: 40px auto;
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                    }
+                    
+                    h1 {
+                        margin-top: 0;
+                        color: #2c3e50;
+                    }
+                    
+                    nav {
+                        margin-bottom: 25px;
+                    }
+                    
+                     nav a {
+                         display: inline-block;
+                         margin-right: 10px;
+                         padding: 10px 14px;
+                         background: #2c3e50;
+                         color: white;
+                         text-decoration: none;
+                         border-radius: 6px;
+                     }
+                    
+                    nav a:hover {
+                        background: #1a252f;
+                    }
+                    
+                    label {
+                        display: block;
+                        margin-top: 15px;
+                        font-weight: bold;
+                    }
+                    
+                    input, select {
+                        width: 100%;
+                        padding: 10px;
+                        margin-top: 6px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        box-sizing: border-box;
+                    }
+                    
+                    button {
+                        margin-top: 20px;
+                        padding: 12px 16 px;
+                        background: #2c3e50;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                    }
+                    
+                    button: hover {
+                        background: #1a252f;
+                    }
+                </style>
+            </head>
+            <body>
+            <div class='container'>
+                <h1>Add Member</h1>
+            
+                <nav>
+                    <a href='/'>Home</a>
+                    <a href='/members'>Members</a>
+                    <a href-'/queries'>Queries</a>
+                </nav>
+                
+                <form method='post' action=' /add-member'>
+                    <label>Member ID</label>
+                    <input type='number' name ='MemberID' min='1' required>
+                    
+                    <label>First Name</label>
+                    <input type='text' name ='First Name' required>
+                    
+                    <label>Last Name</label>
+                    <input type='text' name ='Last Name' required>
+                    
+                    <label>Address</label>
+                    <input type='text' name ='Address' required>
+                    
+                    <label>Date of Birth</label>
+                    <input type='date' name ='DateOfBirth required>
+                    
+                    <label>License ID</label>
+                    <input type='text' name ='LicenseID' required>
+                    
+                    <label>Is Minor?</label>
+                    <select name='IsMinor'>
+                        <option value='false'>False</option>
+                        <option value='true'>True</option>
+                    </select>
+                    
+                    <button type='submit'>Add Member</button>
+                </form>
+            </div>
+            </body>
+            </html>
+            """);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
