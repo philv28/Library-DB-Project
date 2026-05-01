@@ -4,6 +4,8 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import io.github.cdimascio.dotenv.Dotenv;
+
 
 public class MembersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -107,9 +109,11 @@ public class MembersServlet extends HttpServlet {
             """);
 
         try {
-            String url = "jdbc:mysql://localhost:3306/LibraryDB";
-            String user = "root";
-            String password = "rootpass";
+            Dotenv dotenv = Dotenv.load();
+            String url      = dotenv.get("DB_URL");
+            String user     = dotenv.get("DB_USER");
+            String password = dotenv.get("DB_PASSWORD");
+
             Connection conn = DriverManager.getConnection(url, user, password);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM Members");

@@ -1,10 +1,15 @@
 import javax.sound.midi.SysexMessage;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.*;
 
 public class libraryDBUserRepo implements UserRepository {
-    String url = "jdbc:mysql://localhost:3306/LibraryDB";
-    String user = "Admin";
-    String password = "johnpassword";
+    Dotenv dotenv = Dotenv.load();
+    String url      = dotenv.get("DB_URL");
+    String user     = dotenv.get("DB_USER");
+    String password = dotenv.get("DB_PASSWORD");
+
 
     void save(String arg){
         System.out.println("yh");
