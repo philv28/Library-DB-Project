@@ -39,6 +39,7 @@ public class BooksServlet extends HttpServlet {
                 <a href='/members'>Members</a>
                 <a href='/add-member'>Add Member</a>
                 <a href='/queries'>Queries</a>
+                <a href='/trending-books'>View Trending Books</a>
             </nav>
             """);
 

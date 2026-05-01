@@ -65,6 +65,7 @@ public class QueriesServlet extends HttpServlet {
                         margin-bottom: 25px;
                         border-radius: 8px;
                         border: 1px solid #ddd;
+                        overflow-x: auto;
                     }
                     
                     table {
@@ -72,6 +73,7 @@ public class QueriesServlet extends HttpServlet {
                         border-collapse: collapse;
                         background: white;
                         margin-top: 15px;
+                        table-layout: auto;
                     }
                     
                     th {
@@ -84,6 +86,7 @@ public class QueriesServlet extends HttpServlet {
                     td {
                         border-bottom: 1px solid #ddd;
                         padding: 10px;
+                        word-break: break-word;
                     }
                     
                     tr:hover {

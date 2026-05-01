@@ -95,6 +95,20 @@ public class MembersServlet extends HttpServlet {
                         overflow-x: auto;
                         border-radius: 6px;
                     }
+                    
+                    .btn {
+                        padding: 8px 12px;
+                        background: #2c3e50;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        display: inline-block;
+                    }
+                    
+                    .btn:hover {
+                        background: #1a252f;
+                    }
+                    
                 </style>
             </head>
             <body>
@@ -145,10 +159,18 @@ public class MembersServlet extends HttpServlet {
                 out.println("<td>" + rs.getBoolean("IsMinor") + "</td>");
 
                 out.println("<td>");
+
+                out.println("<form method='get' action='/edit-member' style='display:inline;'>");
+                out.println("<input type='hidden' name='MemberID' value='" + memberID + "'>");
+                out.println("<button class='btn' type='submit'>Edit</button>");
+                out.println("</form>");
+
                 out.println("<form method='post' action='/delete-member' style='display:inline;'>");
                 out.println("<input type='hidden' name='MemberID' value='" + memberID + "'>");
-                out.println("<button type='submit'>Delete</button>");
+                out.println("<button class='btn' type='submit' onclick=\"return confirm" +
+                        "('Confirm delete');\">Delete</button>");
                 out.println("</form>");
+
                 out.println("</td>");
 
                 out.println("</tr>");
