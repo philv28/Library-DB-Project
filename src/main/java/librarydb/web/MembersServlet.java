@@ -109,6 +109,15 @@ public class MembersServlet extends HttpServlet {
                         background: #1a252f;
                     }
                     
+                    .btn-delete {
+                        background: #c0392b;
+                    }
+                    
+                    .btn-delete:hover {
+                        background: #922b21;
+                    }
+                    
+                    
                 </style>
             </head>
             <body>
@@ -142,7 +151,7 @@ public class MembersServlet extends HttpServlet {
             out.println("<th>Date of Birth</th>");
             out.println("<th>License ID</th>");
             out.println("<th>Minor?</th>");
-            out.println("<th>Actions</th");
+            out.println("<th>Actions</th>");
             out.println("</tr>");
 
             while (rs.next()) {
@@ -160,15 +169,14 @@ public class MembersServlet extends HttpServlet {
 
                 out.println("<td>");
 
-                out.println("<form method='get' action='/edit-member' style='display:inline;'>");
+                out.println("<form method='get' action='/edit-member' style='display:inline; margin-right:6px;'>");
                 out.println("<input type='hidden' name='MemberID' value='" + memberID + "'>");
                 out.println("<button class='btn' type='submit'>Edit</button>");
                 out.println("</form>");
 
                 out.println("<form method='post' action='/delete-member' style='display:inline;'>");
                 out.println("<input type='hidden' name='MemberID' value='" + memberID + "'>");
-                out.println("<button class='btn' type='submit' onclick=\"return confirm" +
-                        "('Confirm delete');\">Delete</button>");
+                out.println("<button class='btn btn-delete' type='submit' onclick=\"return confirm" + "('Confirm delete');\">Delete</button>");
                 out.println("</form>");
 
                 out.println("</td>");
@@ -186,6 +194,7 @@ public class MembersServlet extends HttpServlet {
             out.println("</pre>");
         }
 
+        out.println("</div>");
         out.println("</body>");
         out.println("</html>");
     }
