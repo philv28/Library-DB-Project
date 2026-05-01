@@ -1,1 +1,6 @@
 /src/main/java/connectionTest.java
+
+target/
+.idea/
+*.class
+.env
