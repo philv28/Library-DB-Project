@@ -99,24 +99,28 @@ public class AddMemberServlet extends HttpServlet {
                     <a href-'/queries'>Queries</a>
                 </nav>
                 
-                <form method='post' action=' /add-member'>
+                <form method='post' action='/add-member'>
                     <label>Member ID</label>
                     <input type='number' name ='MemberID' min='1' required>
                     
                     <label>First Name</label>
-                    <input type='text' name ='First Name' required>
+                    <input type='text' name ='FirstName' required>
                     
                     <label>Last Name</label>
-                    <input type='text' name ='Last Name' required>
+                    <input type='text' name ='LastName' required>
                     
                     <label>Address</label>
                     <input type='text' name ='Address' required>
                     
                     <label>Date of Birth</label>
-                    <input type='date' name ='DateOfBirth required>
+                    <input type='date' name ='DateOfBirth' required>
                     
                     <label>License ID</label>
                     <input type='text' name ='LicenseID' required>
+
+                    <label>Email</label>
+                    <input type='email' name='Email' required>
+
                     
                     <label>Is Minor?</label>
                     <select name='IsMinor'>
