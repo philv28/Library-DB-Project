@@ -1,9 +1,10 @@
-import javax.sound.midi.SysexMessage;
+package librarydb.web;
+
 import java.sql.*;
 
 public class libraryDBUserRepo implements UserRepository {
     String url = "jdbc:mysql://localhost:3306/LibraryDB";
-    String user = "Admin";
+    String user = "admin";
     String password = "johnpassword";
 
     void save(String arg){
@@ -14,6 +15,7 @@ public class libraryDBUserRepo implements UserRepository {
     public void save() {
     }
 
+    // TODO: Create object to store the rs.get___ results and maybe print or return them
     public void showUser(int memberID){
         String commandSQL = "SELECT * FROM Members WHERE memberID = ?";
 
@@ -23,6 +25,7 @@ public class libraryDBUserRepo implements UserRepository {
             ps.setInt(1, memberID);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
+
                 rs.getInt("MemberID");
                 rs.getString("FirstName");
                 rs.getString("LastName");
@@ -31,17 +34,17 @@ public class libraryDBUserRepo implements UserRepository {
                 rs.getDate("DateOfBirth");
                 rs.getString("LicenseID");
                 rs.getBoolean("IsMinor");
-
+                System.out.printf("First name: %s\n Last name: %s \n", rs.getString("FirstName"), rs.getString("LastName"));
             }
 
         } catch (SQLException e) {
             System.out.println("Search failure or user does not exist!");
+            e.printStackTrace();
             System.exit(-1);
         }
     }
 
 
-    // TODO: USE PreparedStatement.setInt() FOR PARAMS AND USE "?"
     public void newMember(String firstName, String lastName, int memberID, String dateOfBirth, String licenseID, boolean minorStatus, String email, String address){
         String commandSQL = "INSERT INTO members (MemberID, FirstName, LastName, Address, Email, DateOfBirth, LicenseID, MinorStatus) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -59,11 +62,11 @@ public class libraryDBUserRepo implements UserRepository {
             ps.setBoolean(8, minorStatus);
 
             int rows = ps.executeUpdate();
-            if (rows > 0){
+            if (rows > 0) {
                 System.out.println("User Inserted");
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("User insert failed!");
             e.printStackTrace();
             System.exit(-1);
@@ -129,7 +132,7 @@ public class libraryDBUserRepo implements UserRepository {
             sqlCall(commandSQL);
     }
 
-    // TODO: Need to refactor this code, SELECT should work but updating it may not.
+    // TODO: Need to refactor this code, SELECT may work but updating it may not.
      public void sqlCall (String commandLine){
 
         try {

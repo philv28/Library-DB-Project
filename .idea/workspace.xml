@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3d35f22-54f9-42d3-a1d0-8edc17967f43" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/AddMemberServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/DeleteMembersServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/HomeServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/MembersServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/QueriesServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/Main.java" afterDir="false" />
+    <list default="true" id="e3d35f22-54f9-42d3-a1d0-8edc17967f43" name="Changes" comment="Commit for compiled files (target) so Git stops complaining.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/libraryDBUserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/libraryDBUserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/librarydb/web/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/librarydb/web/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/libraryDBUserRepo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/librarydb/web/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/librarydb/web/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/librarydb/web/MembersServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/librarydb/web/MembersServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/librarydb/web/QueriesServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/librarydb/web/QueriesServlet.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,28 +30,46 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Jly225"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/philv28/Library-DB-Project",
+    "accountId": "d7ed0388-4d01-42bd-ab13-753978d885e7"
+  }
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="3D5gAFvW2KRJ0czNrcYQy8ErTR0" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "fue-jdbc",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="librarydb.web.Main" />
@@ -70,13 +90,6 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-3183f394aec4-96c0d24d" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -87,5 +100,9 @@
       <updated>1777577200771</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Commit for compiled files (target) so Git stops complaining." />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit for compiled files (target) so Git stops complaining." />
   </component>
 </project>

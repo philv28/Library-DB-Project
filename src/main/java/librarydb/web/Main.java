@@ -19,7 +19,6 @@ public class Main {
         context.addServlet(AddMemberServlet.class, "/add-member");
         context.addServlet(DeleteMembersServlet.class, "/delete-member");
         context.addServlet(QueriesServlet.class, "/queries");
-
         // Start server
         server.start();
         System.out.println("Server running at http://localhost:8080");

@@ -1,3 +1,5 @@
+package librarydb.web;
+
 /*
 * Method bodies for implementing queries and CRUD operations will be defined here.
 * */
