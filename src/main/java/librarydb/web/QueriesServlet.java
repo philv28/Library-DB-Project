@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class QueriesServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -18,18 +20,96 @@ public class QueriesServlet extends HttpServlet {
             <head>
                 <title>Queries</title>
                 <style>
-                    body { font-family: Arial; margin: 30px; background: #f7f7f7; }
-                    table { border-collapse: collapse; background: white; margin-bottom: 30px; }
-                    th, td { border: 1px solid #ccc; padding: 8px; }
-                    th { background: #eee; }
-                    .queryBox { background: white; padding: 20px; margin-bottom: 25px; border-radius: 8px; }
-                    pre { background: #f0f0f0; padding: 10px; overflow-x: auto; }
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        background: #f4f6f8;
+                        color: #222;
+                    }
+                    
+                    .container {
+                        max-width: 1100px;
+                        margin: 40px auto;
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                    }
+                    
+                    h1 {
+                        margin-top: 0;
+                        color: #2c3e50;
+                    }
+                    
+                    nav {
+                        margin-bottom: 25px;
+                    }
+                    
+                     nav a {
+                         display: inline-block;
+                         margin-right: 10px;
+                         padding: 10px 14px;
+                         background: #2c3e50;
+                         color: white;
+                         text-decoration: none;
+                         border-radius: 6px;
+                     }
+                    
+                    nav a:hover {
+                        background: #1a252f;
+                    }
+                    
+                    .queryBox {
+                        background: #fafafa;
+                        padding: 20px;
+                        margin-bottom: 25px;
+                        border-radius: 8px;
+                        border: 1px solid #ddd;
+                        overflow-x: auto;
+                    }
+                    
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        background: white;
+                        margin-top: 15px;
+                        table-layout: auto;
+                    }
+                    
+                    th {
+                        background: #2c3e50;
+                        color: white;
+                        padding: 10px;
+                        text-align: left;
+                    }
+                    
+                    td {
+                        border-bottom: 1px solid #ddd;
+                        padding: 10px;
+                        word-break: break-word;
+                    }
+                    
+                    tr:hover {
+                        background: #f1f1f1;
+                    }
+                    
+                    pre {
+                        background: #f0f0f0;
+                        padding: 10px;
+                        overflow-x: auto;
+                        border-radius: 6px;
+                    }
                 </style>
             </head>
             <body>
-            <h1>SQL Query Showcase</h1>
-            <a href='/'>Home</a>
-        """);
+            <div class='container'>
+            <h1>SQL Query</h1>
+            
+            <nav>
+                <a href='/'>Home</a>
+                <a href='/members'>Members</a>
+            </nav>
+            """);
 
         try {
             String url = "jdbc:mysql://localhost:3306/LibraryDB";
@@ -37,7 +117,7 @@ public class QueriesServlet extends HttpServlet {
             String password = "rootpass";
             Connection conn = DriverManager.getConnection(url, user, password);
 
-            runQuery(out, conn,
+           /* runQuery(out, conn,
                     "Query 1: Staff Book Loan View",
                     "Uses a view to show member loan history and loan status.",
                     "SELECT * FROM StaffBookLoanView");
@@ -87,6 +167,98 @@ public class QueriesServlet extends HttpServlet {
                     JOIN Members m ON cr.MemberID = m.MemberID
                     JOIN Computers c ON cr.ComputerID = c.ComputerID
                     ORDER BY cr.StartTime
+                    """);*/
+
+            runQuery(out, conn,
+                    "Query 1: Books Checked Out Per Member",
+                    "Shows the number of books currently checked out per member. Max allowed is 5.",
+                    """
+                    SELECT m.MemberID, m.FirstName, m.LastName,
+                            COUNT(bl.LoanID) AS BooksCheckedOut,
+                            CASE WHEN COUNT(bl.LoanID) >= 5 THEN 'Limit Reached' ELSE 'Can Borrow More' END AS BorrowStatus
+                    FROM Members m
+                    JOIN BookLoans bl ON m.MemberID = bl.MemberID
+                    WHERE bl.ReturnDate IS NULL
+                    GROUP BY m.MemberID, m.FirstName, m.LastName
+                    """);
+
+            runQuery(out, conn,
+                    "Query 2: Total Unpaid Late Fees Per Member",
+                    "Shows the total unpaid late fees owed per member using joins and aggregation.",
+                    """
+                    SELECT m.MemberID, m.FirstName, m.LastName, SUM(lf.Amount) AS TotalUnpaidFees
+                    FROM Members m
+                    JOIN BookLoans bl ON m.MemberID = bl.MemberID
+                    JOIN LateFees lf ON bl.LoanID = lf.LoanID
+                    WHERE lf.PaidStatus = FALSE
+                    GROUP BY m.MemberID, m.FirstName, m.LastName
+                    """);
+
+            runQuery(out, conn,
+                    "Query 3: Currently Checked Out Books",
+                    "Uses the MemberLoanView to find all books still checked out.",
+                    """
+                    SELECT MemberID, FirstName, LastName, Title, CheckoutDate, DueDate
+                    FROM MemberLoanView
+                    WHERE LoanStatus = 'Still Checked Out'
+                    """);
+
+            runQuery(out, conn,
+                    "Query 4: Overdue Books",
+                    "Finds all overdue books with member name, book title, and days overdue using joins",
+                    """
+                    SELECT m.MemberID, m.FirstName, m.LastName, bt.Title,bl.CheckoutDate, bl.DueDate, DATEDIFF(CURDATE(), bl.DueDate) AS DaysOverdue
+                    FROM Members m
+                    JOIN BookLoans bl ON m.MemberID = bl.MemberID
+                    JOIN BookCopies bc ON bl.CopyID = bc.CopyID
+                    JOIN BookTitles bt ON bc.ISBN = bt.ISBN
+                    WHERE bl.ReturnDate IS NULL AND bl.DueDate < CURDATE()
+                    """);
+            runQuery(out, conn,
+                    "Query 5: Members With More Loans Than Average",
+                    "Finds members who have more loans than the average member using a subquery.",
+                    """
+                    SELECT m.MemberID, m.FirstName, m.LastName, COUNT(bl.LoanID) AS TotalLoans
+                    FROM Members m
+                    JOIN BookLoans bl ON m.MemberID = bl.MemberID
+                    GROUP BY m.MemberID, m.FirstName, m.LastName
+                    HAVING COUNT(bl.LoanID) > (
+                            SELECT AVG(LoanCount) FROM (
+                                    SELECT COUNT(LoanID) AS LoanCount FROM BookLoans GROUP BY MemberID
+                            ) AS LoanCounts
+                    )
+                    """);
+            runQuery(out, conn,
+                    "Query 6: Books Never Loaned Out",
+                    "Finds books that have never been loaned out using a subquery.",
+                    """
+                    SELECT bt.ISBN, bt.Title, bt.Publisher, bt.PublicationYear
+                    FROM BookTitles bt
+                    WHERE bt.ISBN NOT IN (
+                        SELECT DISTINCT bc.ISBN 
+                        FROM BookCopies bc
+                        JOIN BookLoans bl ON bc.CopyID = bl.CopyID
+                    ) 
+                   """);
+            runQuery(out, conn,
+                    "Query 7: Members With Unpaid Fees Higher Than Average",
+                    "Finds members who have unpaid fees higher than the average unpaid fee using a subquery.",
+                    """
+                    SELECT m.MemberID, m.FirstName, m.LastName, SUM(lf.Amount) AS TotalUnpaidFees
+                    FROM Members m
+                    JOIN BookLoans bl ON m.MemberID = bl.MemberID
+                    JOIN LateFees lf ON bl.LoanID = lf.LoanID
+                    WHERE lf.PaidStatus = FALSE
+                    GROUP BY m.MemberID, m.FirstName, m.LastName
+                    HAVING SUM(lf.Amount) > (
+                            SELECT AVG(TotalFees)
+                            FROM (
+                                SELECT SUM(Amount) AS TotalFees
+                                FROM LateFees
+                                WHERE PaidStatus = FALSE
+                                GROUP BY LoanID
+                            ) AS FeeTotals
+                    )
                     """);
 
             conn.close();
@@ -98,6 +270,7 @@ public class QueriesServlet extends HttpServlet {
             out.println("</pre>");
         }
 
+        out.println("</div>");
         out.println("</body></html>");
     }
 
