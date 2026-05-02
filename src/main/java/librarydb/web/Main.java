@@ -22,6 +22,9 @@ public class Main {
         context.addServlet(QueriesServlet.class, "/queries");
         context.addServlet(BooksServlet.class, "/books");
         context.addServlet(TrendingBooksServlet.class, "/trending-books");
+        context.addServlet(AddBookServlet.class, "/add-book");
+        context.addServlet(DeleteBookServlet.class, "/delete-book");
+        context.addServlet(EditBookServlet.class, "/edit-book");
 
         // Start server
         server.start();

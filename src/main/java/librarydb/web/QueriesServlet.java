@@ -1,10 +1,11 @@
 package librarydb.web;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class QueriesServlet extends HttpServlet {
 
@@ -112,10 +113,9 @@ public class QueriesServlet extends HttpServlet {
 
         try {
             Dotenv dotenv = Dotenv.load();
-            String url      = dotenv.get("DB_URL");
-            String user     = dotenv.get("DB_USER");
+            String url = dotenv.get("DB_URL");
+            String user = dotenv.get("DB_USER");
             String password = dotenv.get("DB_PASSWORD");
-
             Connection conn = DriverManager.getConnection(url, user, password);
 
            /* runQuery(out, conn,
@@ -236,10 +236,10 @@ public class QueriesServlet extends HttpServlet {
                     SELECT bt.ISBN, bt.Title, bt.Publisher, bt.PublicationYear
                     FROM BookTitles bt
                     WHERE bt.ISBN NOT IN (
-                        SELECT DISTINCT bc.ISBN
+                        SELECT DISTINCT bc.ISBN 
                         FROM BookCopies bc
                         JOIN BookLoans bl ON bc.CopyID = bl.CopyID
-                    )
+                    ) 
                    """);
             runQuery(out, conn,
                     "Query 7: Members With Unpaid Fees Higher Than Average",

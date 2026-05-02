@@ -28,6 +28,13 @@ public class BooksServlet extends HttpServlet {
                     th { background: #2c3e50; color: white; padding: 10px; text-align: left; }
                     td { border-bottom: 1px solid #ddd; padding: 10px; }
                     tr:hover { background: #f1f1f1; }
+                    .btn { padding: 8px 12px; background: #2c3e50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+                    .btn:hover { background: #1a252f; }
+                    .dropdown { position: relative; display: inline-block; }
+                    .dropdown-menu { display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 6px; z-index: 100; min-width: 120px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+                    .dropdown:hover .dropdown-menu { display: block; }
+                    .dropdown-item { display: block; width: 100%; padding: 10px 14px; background: none; border: none; text-align: left; cursor: pointer; font-size: 14px; }
+                    .dropdown-item:hover { background: #f1f1f1; }
                 </style>
             </head>
             <body>
@@ -40,6 +47,7 @@ public class BooksServlet extends HttpServlet {
                 <a href='/add-member'>Add Member</a>
                 <a href='/queries'>Queries</a>
                 <a href='/trending-books'>View Trending Books</a>
+                <a href='/add-book'>Add Book</a>
             </nav>
             """);
 
@@ -60,7 +68,6 @@ public class BooksServlet extends HttpServlet {
                     bt.PublicationYear,
                     GROUP_CONCAT(DISTINCT CONCAT(a.FirstName, ' ', a.LastName) SEPARATOR ', ') AS Authors,
                     GROUP_CONCAT(DISTINCT g.GenreName SEPARATOR ', ') AS Genres,
-                    COUNT(bc.CopyID) AS TotalCopies,
                     SUM(CASE WHEN bc.Status = 'Available' THEN 1 ELSE 0 END) AS AvailableCopies
                 FROM BookTitles bt
                 LEFT JOIN WrittenBy wb ON bt.ISBN = wb.ISBN
@@ -80,11 +87,12 @@ public class BooksServlet extends HttpServlet {
             out.println("<th>Genre(s)</th>");
             out.println("<th>Publisher</th>");
             out.println("<th>Publication Year</th>");
-            out.println("<th>Total Copies</th>");
             out.println("<th>Available Copies</th>");
+            out.println("<th>Actions</th>");
             out.println("</tr>");
 
             while (rs.next()) {
+                String isbn = rs.getString("ISBN");
                 out.println("<tr>");
                 out.println("<td>" + rs.getString("ISBN") + "</td>");
                 out.println("<td>" + rs.getString("Title") + "</td>");
@@ -92,10 +100,25 @@ public class BooksServlet extends HttpServlet {
                 out.println("<td>" + rs.getString("Genres") + "</td>");
                 out.println("<td>" + rs.getString("Publisher") + "</td>");
                 out.println("<td>" + rs.getInt("PublicationYear") + "</td>");
-                out.println("<td>" + rs.getInt("TotalCopies") + "</td>");
                 out.println("<td>" + rs.getInt("AvailableCopies") + "</td>");
+                out.println("<td>");
+                out.println("<div class='dropdown'>");
+                out.println("<button class='btn dropdown-toggle'>Actions ▼</button>");
+                out.println("<div class='dropdown-menu'>");
+                out.println("<form method='get' action='/edit-book'>");
+                out.println("<input type='hidden' name='ISBN' value='" + isbn + "'>");
+                out.println("<button class='dropdown-item' type='submit'>Edit</button>");
+                out.println("</form>");
+                out.println("<form method='post' action='/delete-book'>");
+                out.println("<input type='hidden' name='ISBN' value='" + isbn + "'>");
+                out.println("<button class='dropdown-item' type='submit' onclick=\"return confirm('Confirm delete');\">Delete</button>");
+                out.println("</form>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</td>");
                 out.println("</tr>");
             }
+
 
             out.println("</table>");
             out.println("</div>"); 
