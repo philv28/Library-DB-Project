@@ -1,4 +1,5 @@
 /src/main/java/connectionTest.java
+/src/main/java/Dotenv.env
 
 target/
 *.class

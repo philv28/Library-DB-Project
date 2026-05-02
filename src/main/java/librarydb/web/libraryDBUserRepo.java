@@ -99,7 +99,6 @@ public class libraryDBUserRepo implements UserRepository {
         """;
 
         sqlCall(commandSQL);
-
     }
 
     public void currentlyCheckedOut(){
