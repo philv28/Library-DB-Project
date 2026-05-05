@@ -27,6 +27,9 @@ public class Main {
         context.addServlet(EditBookServlet.class, "/edit-book");
         context.addServlet(LoginServlet.class, "/login");
         context.addServlet(LogoutServlet.class, "/logout");
+        context.addServlet(MemberLoginServlet.class, "/member-login");
+        context.addServlet(MyAccountServlet.class, "/my-account");
+        context.addServlet(MyActivityServlet.class, "/my-activity");
 
 
 

@@ -7,7 +7,7 @@ import java.sql.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class LoginServlet extends HttpServlet {
+public class MemberLoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
         out.println("""
             <html>
             <head>
-                <title>Login</title>
+                <title>Member Login</title>
                 <style>
                     body {
                         font-family: Arial, sans-serif;
@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
             </head>
             <body>
             <div class='container'>
-                <h1>Employee Login</h1>
+                <h1>Member Login</h1>
             """);
 
         if ("1".equals(error)) {
@@ -91,7 +91,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         out.println("""
-                <form method='post' action='/login'>
+                <form method='post' action='/member-login'>
                     <label for='username'>Email</label>
                     <input type='email' id='username' name='username' required>
 
@@ -101,7 +101,7 @@ public class LoginServlet extends HttpServlet {
                     <button class='btn' type='submit'>Login</button>
                 </form>
                 <p style='text-align:center; margin-top:15px;'>
-                    Are you a member? <a href='/member-login'>Login here</a>
+                    Are you staff? <a href='/login'>Login here</a>
                 </p>
             </div>
             </body>
@@ -117,7 +117,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) {
-            response.sendRedirect("/login?error=1");
+            response.sendRedirect("/member-login?error=1");
             return;
         }
 
@@ -129,8 +129,8 @@ public class LoginServlet extends HttpServlet {
             String dbPassword = dotenv.get("DB_PASSWORD");
 
             String sql = """
-                SELECT EmployeeID, Position, `password`
-                FROM Employees
+                SELECT MemberID, IsMinor, `password`
+                FROM Members
                 WHERE Email = ?
             """;
 
@@ -142,29 +142,27 @@ public class LoginServlet extends HttpServlet {
 
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
-                        int employeeID = rs.getInt("EmployeeID");
-                        String position = rs.getString("Position");
                         String storedPassword = rs.getString("password");
 
                         if (password.equals(storedPassword)) {
                             HttpSession session = request.getSession();
-                            session.setAttribute("userType", "staff");
+                            session.setAttribute("userType", "member");
                             session.setAttribute("loggedIn", true);
-                            session.setAttribute("employeeID", employeeID);
-                            session.setAttribute("position", position);
+                            session.setAttribute("memberID", rs.getInt("MemberID"));
+                            session.setAttribute("isMinor", rs.getBoolean("IsMinor"));
 
-                            response.sendRedirect("/");
+                            response.sendRedirect("/my-account");
                             return;
                         }
                     }
                 }
             }
 
-            response.sendRedirect("/login?error=1");
+            response.sendRedirect("/member-login?error=1");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/login?error=1");
+            response.sendRedirect("/member-login?error=1");
         }
     }
 }
