@@ -3,7 +3,10 @@ package librarydb.web;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.net.URLEncoder;
+import java.time.LocalDate;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -14,6 +17,10 @@ public class AddMemberServlet extends HttpServlet {
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+
+        String memberError = request.getParameter("memberError");
+        String emailError = request.getParameter("emailError");
+        String dateError = request.getParameter("dateError");
 
         out.println("""
             <html>
@@ -76,7 +83,7 @@ public class AddMemberServlet extends HttpServlet {
                     
                     button {
                         margin-top: 20px;
-                        padding: 12px 16 px;
+                        padding: 12px 16px;
                         background: #2c3e50;
                         color: white;
                         border: none;
@@ -84,9 +91,16 @@ public class AddMemberServlet extends HttpServlet {
                         cursor: pointer;
                     }
                     
-                    button: hover {
+                    button:hover {
                         background: #1a252f;
                     }
+                    
+                    .error {
+                        color: #c0392b;
+                        font-weight: bold;
+                        margin-top: 5px;
+                    }
+
                 </style>
             </head>
             <body>
@@ -96,13 +110,17 @@ public class AddMemberServlet extends HttpServlet {
                 <nav>
                     <a href='/'>Home</a>
                     <a href='/members'>Members</a>
-                    <a href-'/queries'>Queries</a>
+                    <a href='/queries'>Queries</a>
                 </nav>
                 
                 <form method='post' action='/add-member'>
                     <label>Member ID</label>
                     <input type='number' name ='MemberID' min='1' required>
-                    
+            """);
+        if (memberError != null) {
+            out.println("<p class='error'>" + memberError + "</p>");
+        }
+        out.println("""
                     <label>First Name</label>
                     <input type='text' name ='FirstName' required>
                     
@@ -113,15 +131,23 @@ public class AddMemberServlet extends HttpServlet {
                     <input type='text' name ='Address' required>
                     
                     <label>Date of Birth</label>
-                    <input type='date' name ='DateOfBirth' required>
-                    
+                    <input type='date' name='DateOfBirth' required>
+            """);
+        if (dateError != null) {
+            out.print("<p class='error'>" + dateError + "</p>");
+        }
+
+        out.println("""        
                     <label>License ID</label>
-                    <input type='text' name ='LicenseID' required>
+                    <input type='text' name ='LicenseID' >
 
                     <label>Email</label>
-                    <input type='email' name='Email' required>
-
-                    
+                    <input type='email' name ='Email' required>
+            """);
+        if (emailError != null) {
+            out.print("<p class='error'>" + emailError + "</p>");
+        }
+        out.print("""
                     <label>Is Minor?</label>
                     <select name='IsMinor'>
                         <option value='false'>False</option>
@@ -136,8 +162,22 @@ public class AddMemberServlet extends HttpServlet {
             """);
     }
 
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+
+        int memberID = Integer.parseInt(request.getParameter("MemberID"));
+
+        String dobString = request.getParameter("DateOfBirth");
+        LocalDate dob = LocalDate.parse(dobString);
+        LocalDate today = LocalDate.now();
+
+        if (dob.isAfter(today)) {
+            response.sendRedirect("/add-member?MemberID=" + memberID + "&dateError=" +
+                    URLEncoder.encode("Error: Cannot select future date", StandardCharsets.UTF_8));
+            return;
+        }
 
         String sql = "INSERT INTO Members " +
                 "(MemberID, FirstName, LastName, Address, Email, DateOfBirth, LicenseID, IsMinor) " +
@@ -150,9 +190,25 @@ public class AddMemberServlet extends HttpServlet {
             String password = dotenv.get("DB_PASSWORD");
 
             Connection conn = DriverManager.getConnection(url, user, password);
+
+            PreparedStatement check = conn.prepareStatement(
+                    "SELECT MemberID FROM Members WHERE MemberID = ?"
+            );
+            check.setInt(1, memberID);
+
+            ResultSet checkResult = check.executeQuery();
+
+            if (checkResult.next()) {
+                conn.close();
+                response.sendRedirect("/add-member?memberError=" +
+                        URLEncoder.encode("A member with that Member ID already exists",
+                                StandardCharsets.UTF_8));
+                return;
+            }
+
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setInt(1, Integer.parseInt(request.getParameter("MemberID")));
+            ps.setInt(1, memberID);
             ps.setString(2, request.getParameter("FirstName"));
             ps.setString(3, request.getParameter("LastName"));
             ps.setString(4, request.getParameter("Address"));
@@ -165,15 +221,37 @@ public class AddMemberServlet extends HttpServlet {
             conn.close();
             response.sendRedirect("/members");
 
-        } catch (Exception e) {
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            String message = e.getMessage();
 
-            out.println("<h3>Error adding member.</h3>");
-            out.println("<a href='/add-member'>Try again</a><br><br>");
-            out.println("<pre>");
-            e.printStackTrace(out);
-            out.println("</pre>");
+            if (message.contains("PRIMARY")) {
+                response.sendRedirect("/add-member?memberError=" +
+                        URLEncoder.encode("Error: Member ID already exists", StandardCharsets.UTF_8));
+                return;
+            } else if(message.contains("Email")) {
+                response.sendRedirect("/add-member?emailError=" +
+                        URLEncoder.encode("Error: Email already exists", StandardCharsets.UTF_8));
+                return;
+            } else if (message.contains("Date of Birth")) {
+                response.sendRedirect("/add-member?dateError=" +
+                        URLEncoder.encode("Error: Cannot select future date", StandardCharsets.UTF_8));
+                return;
+            }
+
+            response.sendRedirect("/add-member?memberError=" +
+                    URLEncoder.encode("Error: Invalid or duplicate member information", StandardCharsets.UTF_8));
+
+        } catch (Exception e) {
+            String message = e.getMessage();
+
+            if (message != null && (message.contains("Date") || message.contains("Birth") || message.contains("future"))) {
+                response.sendRedirect("/add-member?dateError=" +
+                        URLEncoder.encode("Error: Cannot select future date", StandardCharsets.UTF_8));
+                return;
+            }
+
+            response.sendRedirect("/add-member?memberError=" +
+                    URLEncoder.encode("Error: Member ID already exists.", StandardCharsets.UTF_8));;
         }
     }
 }
