@@ -650,3 +650,24 @@ DELIMITER ;
 
 -- test query for procedure
 CALL GetActiveLoansByMember(1);
+
+-- login implementation
+ALTER TABLE Employees ADD COLUMN password VARCHAR(255);
+
+UPDATE Employees SET password = 'password123' WHERE EmployeeID = 101;
+UPDATE Employees SET password = 'password123' WHERE EmployeeID = 102;
+UPDATE Employees SET password = 'password123' WHERE EmployeeID = 103;
+UPDATE Employees SET password = 'password123' WHERE EmployeeID = 104;
+UPDATE Employees SET password = 'password123' WHERE EmployeeID = 105;
+
+ALTER TABLE Members ADD COLUMN password VARCHAR(255);
+
+UPDATE Members SET password = 'password123' WHERE MemberID = 1;
+UPDATE Members SET password = 'password123' WHERE MemberID = 2;
+UPDATE Members SET password = 'password123' WHERE MemberID = 3;
+UPDATE Members SET password = 'password123' WHERE MemberID = 4;
+UPDATE Members SET password = 'password123' WHERE MemberID = 5;
+UPDATE Members SET password = 'password123' WHERE MemberID = 6;
+UPDATE Members SET password = 'password123' WHERE MemberID = 7;
+UPDATE Members SET password = 'password123' WHERE MemberID = 8;
+UPDATE Members SET password = 'password123' WHERE MemberID = 9;
