@@ -11,9 +11,16 @@ import java.io.PrintWriter;
 public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+            
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
+        
         out.println("""
                     <html>
                     <head>
@@ -72,6 +79,7 @@ public class HomeServlet extends HttpServlet {
                             <a href='/books'>View Books</a>
                             <a href='/trending-books'>Trending Books</a>
                             <A href='/add-book'>Add Book</a>
+                            <a href='/logout'>Logout</a>
                         </div>
                     </div>
                     </body>

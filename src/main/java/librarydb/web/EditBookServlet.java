@@ -11,6 +11,12 @@ public class EditBookServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -96,6 +102,7 @@ public class EditBookServlet extends HttpServlet {
                         <nav>
                             <a href='/'>Home</a>
                             <a href='/books'>Books</a>
+                            <a href='/logout'>Logout</a>
                         </nav>
                 """);
 
@@ -145,6 +152,12 @@ public class EditBookServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
 
         try {
             Dotenv dotenv = Dotenv.load();

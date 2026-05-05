@@ -15,6 +15,13 @@ public class AddMemberServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -111,6 +118,7 @@ public class AddMemberServlet extends HttpServlet {
                     <a href='/'>Home</a>
                     <a href='/members'>Members</a>
                     <a href='/queries'>Queries</a>
+                    <a href='/logout'>Logout</a>
                 </nav>
                 
                 <form method='post' action='/add-member'>
@@ -166,6 +174,13 @@ public class AddMemberServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
 
         int memberID = Integer.parseInt(request.getParameter("MemberID"));
 

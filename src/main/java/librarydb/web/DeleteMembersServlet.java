@@ -12,6 +12,12 @@ public class DeleteMembersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
         String sql = "DELETE FROM Members WHERE MemberID = ?";
 
         try {

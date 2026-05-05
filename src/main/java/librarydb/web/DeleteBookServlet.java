@@ -11,6 +11,12 @@ public class DeleteBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
         try {
             Dotenv dotenv = Dotenv.load();
             String url      = dotenv.get("DB_URL");

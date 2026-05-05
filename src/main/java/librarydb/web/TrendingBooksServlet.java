@@ -11,6 +11,12 @@ public class TrendingBooksServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -80,6 +86,7 @@ public class TrendingBooksServlet extends HttpServlet {
                 <a href='/members'>Members</a>
                 <a href='/queries'>Queries</a>
                 <a href='/books'>View Books</a>
+                <a href='/logout'>Logout</a>
             </nav>
 
             <p>Shows books ranked by how many times they have been borrowed.</p>
