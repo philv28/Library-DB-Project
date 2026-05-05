@@ -52,7 +52,7 @@ public class HomeServlet extends HttpServlet {
                             }
                             
                             .menu a {
-                                display: block:
+                                display: block;
                                 margin: 15px 0;
                                 padding: 14px 18px;
                                 background: #2c3e50;
